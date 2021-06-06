@@ -1,7 +1,7 @@
 on: [push]
 env:
   DOCKER_REGISTRY: docker.pkg.github.com
-  DOCKER_IMAGE_TAG: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/cv:${{ github.sha }}
+  DOCKER_IMAGE_TAG: docker.pkg.github.com/${{ github.repository }}/cv:${{ github.sha }}
   KUBERNETES_NAMESPACE: personal-cv
   KUBERNETES_DEPLOYMENT: personal-cv
   KUBERNETES_CONTAINER: personal-cv
