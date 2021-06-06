@@ -1,7 +1,7 @@
 on: [push]
 env:
   DOCKER_REGISTRY: docker.pkg.github.com
-  DOCKER_IMAGE_TAG: docker.pkg.github.com/${{ github.repository }}/cv:${{ github.sha }}
+  DOCKER_IMAGE_TAG: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/cv:${{ github.sha }}
   KUBERNETES_NAMESPACE: personal-cv
   KUBERNETES_DEPLOYMENT: personal-cv
   KUBERNETES_CONTAINER: personal-cv
@@ -14,7 +14,7 @@ jobs:
     - name: Log in to GitHub Docker Registry
       uses: docker/login-action@v1
       with:
-        registry: ${{ DOCKER_REGISTRY }}
+        registry: ${{ env.DOCKER_REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         
@@ -23,14 +23,14 @@ jobs:
       with:
         push: true
         tags: |
-          ${{ DOCKER_IMAGE_TAG }}
+          ${{ env.DOCKER_IMAGE_TAG }}
 
     - name: Deploy to Cluster
       uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: --namespace ${{ KUBERNETES_NAMESPACE }} set image --record deployment/${{ KUBERNETES_DEPLOYMENT }} ${{ KUBERNETES_CONTAINER }}=${ {DOCKER_IMAGE_TAG }}
+        args: --namespace ${{ env.KUBERNETES_NAMESPACE }} set image --record deployment/${{ env.KUBERNETES_DEPLOYMENT }} ${{ env.KUBERNETES_CONTAINER }}=${{ env.DOCKER_IMAGE_TAG }}
 
     - name: Verify Deployment
       uses: steebchen/kubectl@master
