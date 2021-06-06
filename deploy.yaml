@@ -1,0 +1,41 @@
+on: [push]
+env:
+  DOCKER_REGISTRY: docker.pkg.github.com
+  DOCKER_IMAGE_TAG: ${{ DOCKER_REGISTRY }}/${{ github.repository }}/cv:${{ github.sha }}
+  KUBERNETES_NAMESPACE: personal-cv
+  KUBERNETES_DEPLOYMENT: personal-cv
+  KUBERNETES_CONTAINER: personal-cv
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Log in to GitHub Docker Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ DOCKER_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Build container image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: |
+          ${{ DOCKER_IMAGE_TAG }}
+
+    - name: Deploy to Cluster
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: --namespace ${{ KUBERNETES_NAMESPACE }} set image --record deployment/${{ KUBERNETES_DEPLOYMENT }} ${{ KUBERNETES_CONTAINER }}=${ {DOCKER_IMAGE_TAG }}
+
+    - name: Verify Deployment
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.19"
+      with:
+        args: '"rollout status deployment/my-app"'

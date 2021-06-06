@@ -1,0 +1,201 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "34"
+    field.cattle.io/creatorId: user-tp4rk
+    field.cattle.io/publicEndpoints: '[{"nodeName":"local:machine-bhhj7","addresses":["91.121.76.10"],"port":32400,"protocol":"TCP","podName":"plex-server:plex-server-b46cb89c8-pzzkh","allNodes":false}]'
+  creationTimestamp: "2021-04-03T17:40:55Z"
+  generation: 97
+  labels:
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: deployment-plex-server-plex-server
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:field.cattle.io/publicEndpoints: {}
+      f:spec:
+        f:template:
+          f:spec:
+            f:containers:
+              k:{"name":"plex-server"}:
+                f:resources:
+                  f:limits:
+                    .: {}
+                    f:memory: {}
+                  f:requests:
+                    .: {}
+                    f:memory: {}
+    manager: rancher
+    operation: Update
+    time: "2021-05-08T16:40:25Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:field.cattle.io/creatorId: {}
+        f:labels:
+          .: {}
+          f:cattle.io/creator: {}
+          f:workload.user.cattle.io/workloadselector: {}
+      f:spec:
+        f:progressDeadlineSeconds: {}
+        f:replicas: {}
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:strategy:
+          f:rollingUpdate:
+            .: {}
+            f:maxSurge: {}
+            f:maxUnavailable: {}
+          f:type: {}
+        f:template:
+          f:metadata:
+            f:annotations:
+              .: {}
+              f:cattle.io/timestamp: {}
+              f:field.cattle.io/ports: {}
+              f:field.cattle.io/publicEndpoints: {}
+              f:workload.cattle.io/state: {}
+            f:labels:
+              .: {}
+              f:workload.user.cattle.io/workloadselector: {}
+          f:spec:
+            f:containers:
+              k:{"name":"plex-server"}:
+                .: {}
+                f:env:
+                  .: {}
+                  k:{"name":"ADVERTISE_IP"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                f:image: {}
+                f:imagePullPolicy: {}
+                f:name: {}
+                f:ports:
+                  .: {}
+                  k:{"containerPort":32400,"protocol":"TCP"}:
+                    .: {}
+                    f:containerPort: {}
+                    f:hostPort: {}
+                    f:name: {}
+                    f:protocol: {}
+                f:resources:
+                  .: {}
+                  f:limits:
+                    f:memory: {}
+                  f:requests:
+                    f:memory: {}
+                f:securityContext:
+                  .: {}
+                  f:allowPrivilegeEscalation: {}
+                  f:privileged: {}
+                  f:readOnlyRootFilesystem: {}
+                  f:runAsNonRoot: {}
+                f:stdin: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+                f:tty: {}
+                f:volumeMounts:
+                  .: {}
+                  k:{"mountPath":"/config"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                    f:subPath: {}
+                  k:{"mountPath":"/data"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                    f:subPath: {}
+            f:dnsConfig: {}
+            f:dnsPolicy: {}
+            f:nodeName: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext: {}
+            f:terminationGracePeriodSeconds: {}
+            f:volumes:
+              .: {}
+              k:{"name":"plex-config-volume"}:
+                .: {}
+                f:name: {}
+                f:persistentVolumeClaim:
+                  .: {}
+                  f:claimName: {}
+              k:{"name":"plex-data-volume"}:
+                .: {}
+                f:name: {}
+                f:persistentVolumeClaim:
+                  .: {}
+                  f:claimName: {}
+    manager: Go-http-client
+    operation: Update
+    time: "2021-05-30T21:19:44Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:deployment.kubernetes.io/revision: {}
+      f:status:
+        f:availableReplicas: {}
+        f:conditions:
+          .: {}
+          k:{"type":"Available"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Progressing"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:observedGeneration: {}
+        f:readyReplicas: {}
+        f:replicas: {}
+        f:updatedReplicas: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2021-06-04T09:16:27Z"
+  name: plex-server
+  namespace: plex-server
+  resourceVersion: "61695408"
+  uid: fb233585-b2d3-4d64-8c53-53f2b5574d0e
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-plex-server-plex-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    spec:
+      containers:
+        image: plexinc/pms-docker:latest
+        imagePullPolicy: Always
+        name: plex-server
+      dnsConfig: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
